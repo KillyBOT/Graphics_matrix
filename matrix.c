@@ -22,12 +22,13 @@ print the matrix such that it looks like
 the template in the top comment
 */
 void print_matrix(struct matrix *m) {
-  for(int row = 0; row < m->rows; rows++){
-    for(int col = 0; col < m->cols; cols++){
+  for(int row = 0; row < m->rows; row++){
+    for(int col = 0; col < m->lastcol; col++){
       printf("%f ", m->m[row][col]);
     }
     printf("\n");
   }
+  printf("\n");
 }
 
 /*-------------- void ident() --------------
@@ -41,6 +42,7 @@ void ident(struct matrix *m) {
       if(row == col) m->m[row][col] = 1;
       else m->m[row][col] = 0;
     }
+    m->lastcol++;
   }
 }
 
@@ -53,6 +55,23 @@ multiply a by b, modifying b to be the product
 a*b -> b
 */
 void matrix_mult(struct matrix *a, struct matrix *b) {
+  double final[b->cols];
+  for(int bCol = 0; bCol < b->lastcol; bCol++){
+
+    for(int aRow = 0; aRow < a->rows; aRow++){
+      final[aRow] = 0;
+      for(int bRow = 0; bRow < b->rows; bRow++){
+        printf("%f * %f\n", a->m[aRow][bRow], b->m[bRow][bCol]);
+        final[aRow] += a->m[aRow][bRow] * b->m[bRow][bCol];
+      }
+      printf("Final: %f\n",final[aRow]);
+    }
+    printf("\n");
+
+    for(int row = 0; row < b->rows; row++){
+      b->m[row][bCol] = final[row];
+    }
+  }
 }
 
 
