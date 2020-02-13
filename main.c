@@ -21,8 +21,8 @@ int main() {
   multTest = new_matrix(DIMENSIONS, DIMENSIONS);
 
   ident(identTest);
-  add_edge(edges, 0,0,0,1,1,1);
-  add_edge(edges, 3,3,4,2,7,7);
+  add_edge(edges, 0,0,0,30,30,0);
+  add_edge(edges, 50,70,0,40,90,0);
   add_edge(multTest, 2,0,1,1,2,0);
   add_edge(multTest, 0,3,2,0,0,0);
 
@@ -31,6 +31,9 @@ int main() {
   print_matrix(multTest);
 
   matrix_mult(multTest,edges);
+
+  draw_lines(edges,s,DEFAULT_COLOR);
+  display(s);
 
   print_matrix(edges);
 
