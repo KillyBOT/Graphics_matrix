@@ -61,12 +61,12 @@ void matrix_mult(struct matrix *a, struct matrix *b) {
     for(int aRow = 0; aRow < a->rows; aRow++){
       final[aRow] = 0;
       for(int bRow = 0; bRow < b->rows; bRow++){
-        printf("%f * %f\n", a->m[aRow][bRow], b->m[bRow][bCol]);
+        //printf("%f * %f\n", a->m[aRow][bRow], b->m[bRow][bCol]);
         final[aRow] += a->m[aRow][bRow] * b->m[bRow][bCol];
       }
-      printf("Final: %f\n",final[aRow]);
+      //printf("Final: %f\n",final[aRow]);
     }
-    printf("\n");
+    //printf("\n");
 
     for(int row = 0; row < b->rows; row++){
       b->m[row][bCol] = final[row];
@@ -74,6 +74,13 @@ void matrix_mult(struct matrix *a, struct matrix *b) {
   }
 }
 
+void scalar_mult(struct matrix* m, double s){
+  for(int row = 0; row < m->rows; row++){
+    for(int col = 0; col < m->lastcol; col++){
+      m->m[row][col] *= s;
+    }
+  }
+}
 
 
 /*===============================================

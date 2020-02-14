@@ -15,27 +15,43 @@ int main() {
   struct matrix *edges;
   struct matrix *identTest;
   struct matrix *multTest;
+  color testColor;
 
-  edges = new_matrix(DIMENSIONS, 10);
+  clear_screen(s);
+
+  testColor.red = MAX_COLOR;
+  testColor.green = MAX_COLOR;
+  testColor.blue = MAX_COLOR;
+
+  edges = new_matrix(DIMENSIONS, 32);
   identTest = new_matrix(DIMENSIONS,DIMENSIONS);
   multTest = new_matrix(DIMENSIONS, DIMENSIONS);
 
   ident(identTest);
-  add_edge(edges, 0,0,0,30,30,0);
-  add_edge(edges, 50,70,0,40,90,0);
-  add_edge(multTest, 2,0,1,1,2,0);
-  add_edge(multTest, 0,3,2,0,0,0);
+  //We'll make a square to test transformations
+  add_edge(edges, 50,50,0,100,50,0);
+  add_edge(edges, 50,50,0,50,100,0);
+  add_edge(edges, 50,100,0,100,100,0);
+  add_edge(edges, 100,50,0,100,100,0);
+  //add_edge(multTest, 2,0,0,0,2,0);
+  //add_edge(multTest, 0,0,0,0,0,0);
+  ident(multTest);
+  scalar_mult(multTest,2);
 
   print_matrix(identTest);
   print_matrix(edges);
   print_matrix(multTest);
 
-  matrix_mult(multTest,edges);
-
-  draw_lines(edges,s,DEFAULT_COLOR);
-  display(s);
+  matrix_mult(identTest,edges);
 
   print_matrix(edges);
+
+  matrix_mult(multTest,edges);
+
+  print_matrix(edges);
+
+  draw_lines(edges,s,testColor);
+  display(s);
 
   free_matrix( edges );
   free_matrix(identTest);

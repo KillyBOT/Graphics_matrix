@@ -54,7 +54,7 @@ void draw_lines( struct matrix * points, screen s, color c) {
 			points->m[1][col],
 			points->m[0][col + 1],
 			points->m[1][col + 1],
-			s, c )
+			s, c );
 	}
 }
 

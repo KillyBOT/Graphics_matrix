@@ -17,5 +17,6 @@ void copy_matrix(struct matrix *a, struct matrix *b);
 void print_matrix(struct matrix *m);
 void ident(struct matrix *m);
 void matrix_mult(struct matrix *a, struct matrix *b);
+void scalar_mult(struct matrix* m, double s);
 
 #endif
