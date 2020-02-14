@@ -24,7 +24,7 @@ the template in the top comment
 void print_matrix(struct matrix *m) {
   for(int row = 0; row < m->rows; row++){
     for(int col = 0; col < m->lastcol; col++){
-      printf("%f ", m->m[row][col]);
+      printf("%-10f ", m->m[row][col]);
     }
     printf("\n");
   }
@@ -162,6 +162,7 @@ copy matrix a to matrix b
 void copy_matrix(struct matrix *a, struct matrix *b) {
 
   int r, c;
+  b->lastcol = a->lastcol;
 
   for (r=0; r < a->rows; r++)
     for (c=0; c < a->cols; c++)
