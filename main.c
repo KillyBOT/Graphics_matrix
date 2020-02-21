@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
 #include <math.h>
 
 #include "ml6.h"
@@ -10,7 +12,7 @@
 
 int main() {
 
-  screen s;
+  /*screen s;
   struct matrix *edges;
   struct matrix *edgesScaled;
   struct matrix *edgesMatrixMult;
@@ -100,5 +102,83 @@ int main() {
 
   free_matrix( edges );
   free_matrix(identTest);
-  free_matrix(multTest);
+  free_matrix(multTest);*/
+
+  screen s;
+  struct matrix *e;
+  struct matrix *m;
+
+  clear_screen(s);
+
+  char fileName[32];
+  char finalFileName[32];
+  int f;
+  int stat;
+
+  color blue;
+  color grey;
+
+  blue.red = 0;
+  blue.green = 0;
+  blue.blue = MAX_COLOR;
+
+  grey.red = MAX_COLOR/2;
+  grey.green = MAX_COLOR/2;
+  grey.blue = MAX_COLOR/2;
+
+  double rads;
+
+  for(int degrees = 0; degrees < 360; degrees++){
+
+    m = new_matrix(DIMENSIONS, 8);
+    e = new_matrix(DIMENSIONS, 8);
+    clear_screen(s);
+
+    sprintf(fileName, "pic_%d.ppm",degrees);
+    sprintf(finalFileName, "pic_%d.png",degrees);
+    rads = degrees * (M_PI / 180);
+
+    add_edge(e, -.5, -.5, 0, .5, -.5, 0);
+    add_edge(e, -.5, -.5, 0, -.5, .5, 0);
+    add_edge(e, -.5, .5, 0, .5, .5, 0);
+    add_edge(e, .5, -.5, 0, .5, .5, 0);
+
+    copy_matrix(e, m);
+
+    matrix_scale(e, 125);
+    matrix_rot(e, rads*27);
+    matrix_trans(e, XRES/2, YRES/2, 0);
+
+    matrix_rot(m,M_PI/4);
+    matrix_rot(m, rads);
+    matrix_scale(m, 50);
+    matrix_trans(m, XRES/2, YRES/2, 0);
+    matrix_trans(m, (XRES/4) * (cos(rads) - sin(rads)), (YRES/4) * (cos(rads) + sin(rads)), 0);
+
+    draw_lines(e, s, blue);
+    draw_lines(m, s, grey);
+    //display(s);
+    free_matrix(e);
+    free_matrix(m);
+
+    save_ppm(s, fileName);
+
+    f = fork();
+
+    if(f){
+      waitpid(f,&stat,0);
+    } else {
+      execlp("convert","convert",fileName,finalFileName,NULL);
+    }
+
+    f = fork();
+    if(f){
+      waitpid(f,&stat,0);
+    } else {
+      execlp("rm", "rm", fileName, NULL);
+    }
+
+  }
+
+  
 }
