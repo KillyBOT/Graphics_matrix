@@ -8,8 +8,6 @@
 #include "draw.h"
 #include "matrix.h"
 
-#define DIMENSIONS 4
-
 int main() {
 
   screen s;
@@ -54,10 +52,10 @@ int main() {
   rotTest = new_matrix(DIMENSIONS, DIMENSIONS);
 
   //We'll make a square to test transformations
-  add_edge(edges, 50,50,0,100,50,0);
-  add_edge(edges, 50,50,0,50,100,0);
-  add_edge(edges, 50,100,0,100,100,0);
-  add_edge(edges, 100,50,0,100,100,0);
+  add_edge(edges, -25,-25,0,25,-25,0);
+  add_edge(edges, -25,-25,0,-25,25,0);
+  add_edge(edges, -25,25,0,25,25,0);
+  add_edge(edges, 25,-25,0,25,25,0);
 
   copy_matrix(edges, edgesScaled);
   copy_matrix(edges, edgesMatrixMult);
@@ -66,14 +64,13 @@ int main() {
   ident(identTest);
   ident(scalarTest);
 
-  scalar_mult(scalarTest,3);
+  matrix_scale(scalarTest,3);
 
   add_edge(multTest, 4, 1, 0, 1, 3, 0);
   add_edge(multTest, 0, 0, 1, 0, 0, 0);
 
-  add_edge(rotTest, cos(-M_PI/12), -sin(-M_PI/12), 0, sin(-M_PI/12), cos(-M_PI/12), 0);
-  add_edge(rotTest, 0, 0, 1, 0, 0, 0);
-  scalar_mult(rotTest,2);
+  matrix_rot(edgesRotated,M_PI/4);
+  matrix_scale(edgesRotated,1.5);
 
   print_matrix(identTest);
   print_matrix(edges);
@@ -86,7 +83,11 @@ int main() {
 
   matrix_mult(scalarTest,edgesScaled);
   matrix_mult(multTest,edgesMatrixMult);
-  matrix_mult(rotTest, edgesRotated);
+
+  matrix_trans(edges, XRES/2,YRES/2,0);
+  matrix_trans(edgesScaled, XRES/2, YRES/2, 0);
+  matrix_trans(edgesMatrixMult, XRES/2, YRES/2, 0);
+  matrix_trans(edgesRotated, XRES/2, YRES/2, 0);
 
   print_matrix(edges);
   print_matrix(edgesRotated);

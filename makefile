@@ -18,7 +18,7 @@ draw.o: draw.c draw.h display.h ml6.h matrix.h
 dsiplay.o: display.c display.h ml6.h matrix.h
 	$(CC) $(CFLAGS) -c display.c
 
-matrix.o: matrix.c matrix.h
+matrix.o: matrix.c matrix.h draw.c draw.h
 	$(CC) $(CFLAGS) -c matrix.c
 
 clean:

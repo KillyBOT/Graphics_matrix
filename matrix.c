@@ -13,6 +13,7 @@
 #include <math.h>
 
 #include "matrix.h"
+#include "draw.h"
 
 
 /*-------------- void print_matrix() --------------
@@ -74,7 +75,7 @@ void matrix_mult(struct matrix *a, struct matrix *b) {
   }
 }
 
-void scalar_mult(struct matrix* m, double s){
+void matrix_scale(struct matrix* m, double s){
   for(int row = 0; row < m->rows; row++){
     for(int col = 0; col < m->lastcol; col++){
       m->m[row][col] *= s;
@@ -82,6 +83,29 @@ void scalar_mult(struct matrix* m, double s){
   }
 }
 
+void matrix_trans(struct matrix* m, double x, double y, double z){
+  for(int col = 0; col < m->lastcol; col++){
+
+    m->m[0][col] += x;
+    m->m[1][col] += y;
+    m->m[2][col] += z;
+
+  }
+}
+
+void matrix_rot(struct matrix* m, double rads){
+  struct matrix *rotMatrix;
+
+  rotMatrix = new_matrix(DIMENSIONS,DIMENSIONS);
+
+  add_edge(rotMatrix, cos(rads), sin(rads), 0, -sin(rads), cos(rads), 0);
+  add_edge(rotMatrix, 0, 0, 1, 0, 0, 0);
+
+  matrix_mult(rotMatrix, m);
+
+  free_matrix(rotMatrix);
+
+}
 
 /*===============================================
   These Functions do not need to be modified
