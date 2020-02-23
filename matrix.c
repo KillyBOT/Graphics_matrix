@@ -76,7 +76,7 @@ void matrix_mult(struct matrix *a, struct matrix *b) {
 }
 
 void matrix_scale(struct matrix* m, double s){
-  for(int row = 0; row < m->rows; row++){
+  for(int row = 0; row < m->rows - 1; row++){
     for(int col = 0; col < m->lastcol; col++){
       m->m[row][col] *= s;
     }

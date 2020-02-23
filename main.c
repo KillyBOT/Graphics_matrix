@@ -105,8 +105,12 @@ int main() {
   free_matrix(multTest);*/
 
   screen s;
-  struct matrix *e;
-  struct matrix *m;
+
+  struct matrix *m1;
+  struct matrix *m2;
+  struct matrix *m3;
+  struct matrix *m4;
+  struct matrix *mt;
 
   clear_screen(s);
 
@@ -115,53 +119,76 @@ int main() {
   int f;
   int stat;
 
-  color blue;
-  color grey;
+  color red = {MAX_COLOR,0,0};
+  color green = {0,MAX_COLOR,0};
+  color blue = {0,0,MAX_COLOR};
+  color yellow = {MAX_COLOR,MAX_COLOR,0};
+  color white = {MAX_COLOR,MAX_COLOR,MAX_COLOR};
 
-  blue.red = 0;
-  blue.green = 0;
-  blue.blue = MAX_COLOR;
+  double p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y;
 
-  grey.red = MAX_COLOR/2;
-  grey.green = MAX_COLOR/2;
-  grey.blue = MAX_COLOR/2;
-
-  double rads;
+  double rads = 0;
 
   for(int degrees = 0; degrees < 360; degrees++){
 
-    m = new_matrix(DIMENSIONS, 8);
-    e = new_matrix(DIMENSIONS, 8);
+    m1 = new_matrix(DIMENSIONS, 8);
+    m2 = new_matrix(DIMENSIONS, 8);
+    m3 = new_matrix(DIMENSIONS, 8);
+    m4 = new_matrix(DIMENSIONS, 8);
+    mt = new_matrix(DIMENSIONS, 8);
     clear_screen(s);
 
     sprintf(fileName, "pic_%d.ppm",degrees);
     sprintf(finalFileName, "pic_%d.png",degrees);
-    rads = degrees * (M_PI / 180);
 
-    add_edge(e, -.5, -.5, 0, .5, -.5, 0);
-    add_edge(e, -.5, -.5, 0, -.5, .5, 0);
-    add_edge(e, -.5, .5, 0, .5, .5, 0);
-    add_edge(e, .5, -.5, 0, .5, .5, 0);
+    add_edge(m1, -.5, -.5, 0, .5, -.5, 0);
+    add_edge(m1, -.5, -.5, 0, -.5, .5, 0);
+    add_edge(m1, -.5, .5, 0, .5, .5, 0);
+    add_edge(m1, .5, -.5, 0, .5, .5, 0);
 
-    copy_matrix(e, m);
+    matrix_scale(m1, 50);
 
-    matrix_scale(e, 125);
-    matrix_rot(e, rads*27);
-    matrix_trans(e, XRES/2, YRES/2, 0);
+    copy_matrix(m1, m2);
+    copy_matrix(m1, m3);
+    copy_matrix(m1, m4);
 
-    matrix_rot(m,M_PI/4);
-    matrix_rot(m, rads);
-    matrix_scale(m, 50);
-    matrix_trans(m, XRES/2, YRES/2, 0);
-    matrix_trans(m, (XRES/4) * (cos(rads) - sin(rads)), (YRES/4) * (cos(rads) + sin(rads)), 0);
+    p1x = XRES/2 + (XRES/2 - 25) * cos(rads);
+    p1y = YRES/2;
+    p2x = XRES/2 + ((XRES/2 - 25) * (sqrt(2)/2)) * cos(rads + M_PI/4);
+    p2y = YRES/2 + ((YRES/2 - 25) * (sqrt(2)/2)) * cos(rads + M_PI/4);
+    p3x = XRES/2;
+    p3y = YRES/2 + (YRES/2 - 25) * cos(rads + M_PI/2);
+    p4x = XRES/2 - ((XRES/2 - 25) * (sqrt(2)/2)) * cos(rads + (3*M_PI)/4);
+    p4y = YRES/2 + ((YRES/2 - 25) * (sqrt(2)/2)) * cos(rads + (3*M_PI)/4);
 
-    draw_lines(e, s, blue);
-    draw_lines(m, s, grey);
+    matrix_trans(m1, p1x, p1y, 0);
+    matrix_trans(m2, p2x, p2y, 0);
+    matrix_trans(m3, p3x, p3y, 0);
+    matrix_trans(m4, p4x, p4y, 0);
+
+    add_edge(mt, p1x, p1y, 0, p2x, p2y, 0);
+    add_edge(mt, p2x, p2y, 0, p3x, p3y, 0);
+    add_edge(mt, p3x, p3y, 0, p4x, p4y, 0);
+    add_edge(mt, p4x, p4y, 0, p1x, p1y, 0);
+ 
+    draw_lines(m1, s, red);
+    draw_lines(m2, s, blue);
+    draw_lines(m3, s, green);
+    draw_lines(m4, s, yellow);
+    draw_lines(mt, s, white);
+
+
     //display(s);
-    free_matrix(e);
-    free_matrix(m);
+
+    free_matrix(m1);
+    free_matrix(m2);
+    free_matrix(m3);
+    free_matrix(m4);
+    free_matrix(mt);
 
     save_ppm(s, fileName);
+
+    rads += (M_PI / 180);
 
     f = fork();
 
