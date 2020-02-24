@@ -129,7 +129,7 @@ int main() {
 
   double rads = 0;
 
-  for(int degrees = 0; degrees < 360; degrees++){
+  for(int degrees = 0; degrees < 90; degrees++){
 
     m1 = new_matrix(DIMENSIONS, 8);
     m2 = new_matrix(DIMENSIONS, 8);
@@ -152,14 +152,14 @@ int main() {
     copy_matrix(m1, m3);
     copy_matrix(m1, m4);
 
-    p1x = XRES/2 + (XRES/2 - 25) * cos(rads);
+    p1x = XRES/2 + (XRES/2 - 35) * cos(rads);
     p1y = YRES/2;
-    p2x = XRES/2 + ((XRES/2 - 25) * (sqrt(2)/2)) * cos(rads + M_PI/4);
-    p2y = YRES/2 + ((YRES/2 - 25) * (sqrt(2)/2)) * cos(rads + M_PI/4);
+    p2x = XRES/2 + ((XRES/2 - 35) * (sqrt(2)/2)) * cos(rads + M_PI/4);
+    p2y = YRES/2 + ((YRES/2 - 35) * (sqrt(2)/2)) * cos(rads + M_PI/4);
     p3x = XRES/2;
-    p3y = YRES/2 + (YRES/2 - 25) * cos(rads + M_PI/2);
-    p4x = XRES/2 - ((XRES/2 - 25) * (sqrt(2)/2)) * cos(rads + (3*M_PI)/4);
-    p4y = YRES/2 + ((YRES/2 - 25) * (sqrt(2)/2)) * cos(rads + (3*M_PI)/4);
+    p3y = YRES/2 + (YRES/2 - 35) * cos(rads + M_PI/2);
+    p4x = XRES/2 - ((XRES/2 - 35) * (sqrt(2)/2)) * cos(rads + (3*M_PI)/4);
+    p4y = YRES/2 + ((YRES/2 - 35) * (sqrt(2)/2)) * cos(rads + (3*M_PI)/4);
 
     matrix_trans(m1, p1x, p1y, 0);
     matrix_trans(m2, p2x, p2y, 0);
@@ -170,7 +170,7 @@ int main() {
     add_edge(mt, p2x, p2y, 0, p3x, p3y, 0);
     add_edge(mt, p3x, p3y, 0, p4x, p4y, 0);
     add_edge(mt, p4x, p4y, 0, p1x, p1y, 0);
- 
+
     draw_lines(m1, s, red);
     draw_lines(m2, s, blue);
     draw_lines(m3, s, green);
@@ -188,7 +188,7 @@ int main() {
 
     save_ppm(s, fileName);
 
-    rads += (M_PI / 180);
+    rads += (M_PI / 45);
 
     f = fork();
 
@@ -207,5 +207,5 @@ int main() {
 
   }
 
-  
+
 }
